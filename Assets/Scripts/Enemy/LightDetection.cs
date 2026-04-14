@@ -15,18 +15,24 @@ public class LightDetection : MonoBehaviour,IDetection
     [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private LayerMask playerMask;
 
-    [Header("Visual Feedback")]
+    [Header("Visual")]
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color alertColor = Color.red;
 
     [SerializeField] private Light2D spotlight;
 
     private bool rotatingRight = true;
-    private Transform player;
     private bool detecting = true;
     private bool playerInsideCone = false;
 
+    private Transform player;
+    private PlayerDeath playerDeath;
+
     public event Action OnPlayerDetected;
+    private void Start()
+    {
+        OnPlayerDetected += HandlePlayerDetected;
+    }
     public void StartDetection()
     {
         detecting = true;
@@ -93,10 +99,26 @@ public class LightDetection : MonoBehaviour,IDetection
         if (spotlight != null) spotlight.color = color;
     }
 
-    // Called by LightTrigger
     public void SetPlayerInside(bool inside, Transform playerTransform)
     {
         playerInsideCone = inside;
-        player = inside ? playerTransform : null;
+
+        if (inside && playerTransform != null)
+        {
+            player = playerTransform;
+            playerDeath = playerTransform.GetComponent<PlayerDeath>(); // Only once when entering
+        }
+        else
+        {
+            player = null;
+            playerDeath = null;
+        }
+    }
+    private void HandlePlayerDetected()
+    {
+        if (playerDeath != null)
+        {
+            playerDeath.Die();
+        }
     }
 }

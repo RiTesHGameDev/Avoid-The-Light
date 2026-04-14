@@ -16,7 +16,6 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private Animator animator;
 
     private int jumpsRemaining;
-
     private void Start()
     {
         jumpsRemaining = maxJumps;
@@ -34,7 +33,6 @@ public class PlayerJump : MonoBehaviour
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
-
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed && jumpsRemaining > 0)
