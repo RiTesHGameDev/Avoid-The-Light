@@ -26,12 +26,10 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
     }
-
     public void Move(InputAction.CallbackContext context)
     {
         horizontalInput = context.ReadValue<Vector2>().x;
     }
-
     private void Flip()
     {
         isFacingRight = !isFacingRight;
@@ -39,7 +37,6 @@ public class PlayerMovement : MonoBehaviour
         localScale.x *= -1f;
         transform.localScale = localScale;
     }
-
     public bool IsFacingRight()
     {
         return isFacingRight;
